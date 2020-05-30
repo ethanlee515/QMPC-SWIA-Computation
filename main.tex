@@ -1,0 +1,60 @@
+\def\Draft{}% Remove this line to remove comments
+\def\LLNCS{}% set for lncs version
+
+\ifdefined\LLNCS
+\documentclass{llncs}
+\pagestyle{plain}
+\else
+\documentclass{article}
+\usepackage{amsthm}
+\fi
+
+\input{macros}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draft commands. Remove first line of the file to remove these commands.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\authnote}[3]{{\footnotesize\color{#1}[#2: #3]}}
+\ifdefined\Draft
+    \newcommand{\KM}[1]{\authnote{cyan}{KM}{#1}}
+    \newcommand{\Ethan}[1]{\authnote{magenta}{Ethan}{#1}}
+    \newcommand{\Miriam}[1]{\authnote{blue}{Miriam}{#1}}
+    \newcommand{\Hao}[1]{\authnote{purple}{Hao}{#1}}
+    \newcommand{\bnote}[1]{\authnote{red}{Bar}{#1}}
+    \newcommand{\yc}[1]{\authnote{brown}{YC}{#1}}
+    \newcommand{\deleted}[1]{{\color{red}{\bf Deleted}: #1}}
+    \newcommand{\changed}[1]{{\color{blue}#1}}
+    % \pagecolor{yellow!20}
+\else
+    \newcommand{\KM}[1]{}
+    \newcommand{\Ethan}[1]{}
+    \newcommand{\Miriam}[1]{}
+    \newcommand{\Hao}[1]{}
+    \newcommand{\bnote}[1]{}
+    \newcommand{\yc}[1]{}
+    \newcommand{\deleted}[1]{}
+    \newcommand{\changed}[1]{#1}
+\fi
+
+\title{QMPC-SWIA Computation Security}
+
+\author{}
+\date{}
+\LLNCS{ \institute{}}
+
+\floatstyle{boxed} 
+\restylefloat{figure}
+
+\begin{document}
+
+\maketitle
+
+
+\input{computation}
+
+
+
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+
+\end{document}

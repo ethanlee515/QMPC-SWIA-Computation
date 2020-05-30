@@ -1,0 +1,502 @@
+\usepackage{graphicx,color,url,booktabs,comment}  %cite
+\usepackage{authblk}
+\usepackage{amsmath, amssymb}
+\usepackage{mathrsfs}
+\usepackage{qcircuit}
+\usepackage{braket}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{cite,xcolor,float}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage[pdfstartview=FitH,colorlinks,linkcolor=blue,filecolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fixltx2e}
+\MakeRobust{\Call}
+\usepackage[numbers]{natbib} % \citet{foo} -> Foo et al. [5]
+\usepackage{xspace}
+\usepackage{cleveref} %% for referencing use \cref
+\usepackage{mdframed}
+
+\usepackage{amsfonts}
+
+\usepackage{unicode-math}
+
+\setmathfont{lmmath-regular.otf}[
+Extension={.otf},
+Path=./fonts/,
+Scale=1]
+
+\setmathfont{STIX2Math}[
+Extension={.otf},
+Path=./fonts/,
+range=scr/{latin},
+Scale=1]
+
+\let\mathbb\relax % remove the definition by unicode-math
+\DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}
+
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+\urlstyle{sf}
+%\usepackage[margin=1in]{geometry}
+% \usepackage{fancyhdr}
+%\usepackage[colorlinks]{hyperref} %pagebackref
+
+\newcommand{\nc}{\newcommand}
+\nc{\rnc}{\renewcommand}
+%
+%\newcommand{\bra}[1]{\langle #1|}
+%\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\proj}[1]{|#1\rangle\langle #1|}
+\nc{\dyad}[1]{\ket{#1}\!\bra{#1}}
+% \newcommand{\braket}[2]{\langle #1|#2\rangle}
+% \newcommand{\Bra}[1]{\left\langle #1\right|}
+% \newcommand{\Ket}[1]{\left|#1\right\rangle}
+\newcommand{\Proj}[1]{\left|#1\right\rangle\left\langle #1\right|}
+% \newcommand{\Braket}[2]{\left\langle #1\middle|#2\right\rangle}
+\nc{\vev}[1]{\langle#1\rangle}
+\nc{\grad}{{\vec{\nabla}}}
+\nc{\abs}[1]{\lvert#1\rvert}
+\nc{\onreg}[2]{\ensuremath{{#1}^{\gray{#2}}}}
+%\DeclareMathOperator{\abs}{abs}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\eig}{eig}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Img}{Im}
+\DeclareMathOperator{\Par}{Par}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\polylog}{polylog}
+%\DeclareMathOperator{\negl}{negl}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+% \DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Sep}{Sep}
+\DeclareMathOperator{\SepSym}{SepSym}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\swap}{SWAP}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\ProdSym}{ProdSym}
+\DeclareMathOperator{\SEP}{SEP}
+\DeclareMathOperator{\PPT}{PPT}
+\DeclareMathOperator{\Wg}{Wg}
+\DeclareMathOperator{\WMEM}{WMEM}
+\DeclareMathOperator{\WOPT}{WOPT}
+
+\DeclareMathOperator{\BPP}{\mathsf{BPP}}
+\DeclareMathOperator{\QPIP}{\mathsf{QPIP}}
+\DeclareMathOperator{\SampBQP}{\mathsf{SampBQP}}
+\DeclareMathOperator{\BQP}{\mathsf{BQP}}
+\DeclareMathOperator{\cnot}{\normalfont\textsc{cnot}}
+\DeclareMathOperator{\DTIME}{\mathsf{DTIME}}
+\DeclareMathOperator{\NTIME}{\mathsf{NTIME}}
+\DeclareMathOperator{\MA}{\mathsf{MA}}
+\DeclareMathOperator{\NP}{\mathsf{NP}}
+\DeclareMathOperator{\NEXP}{\mathsf{NEXP}}
+\DeclareMathOperator{\Ptime}{\mathsf{P}}
+\DeclareMathOperator{\QMA}{\mathsf{QMA}}
+\DeclareMathOperator{\QCMA}{\mathsf{QCMA}}
+\DeclareMathOperator{\BellQMA}{\mathsf{BellQMA}}
+
+% \newcommand{\be}{\begin{equation}}
+% \newcommand{\ee}{\end{equation}}
+% \newcommand{\bea}{\begin{eqnarray}}
+% \newcommand{\eea}{\end{eqnarray}}
+% \newcommand{\nn}{\nonumber}
+% \newcommand{\bi}{\begin{itemize}}
+% \newcommand{\ei}{\end{itemize}}
+% \newcommand{\bn}{\begin{enumerate}}
+% \newcommand{\en}{\end{enumerate}}
+% \def\beas#1\eeas{\begin{eqnarray*}#1\end{eqnarray*}}
+% \def\ba#1\ea{\begin{align}#1\end{align}}
+% \nc{\bas}{\begin{aligned}}
+% \nc{\eas}{\end{aligned}}
+% \nc{\bpm}{\begin{pmatrix}}
+% \nc{\epm}{\end{pmatrix}}
+
+\def\keq{\approx_{\negl(\kappa)}}
+
+\def\non{\nonumber}
+\def\nn{\nonumber}
+\def\eq#1{(\ref{eq:#1})}
+\def\eqs#1#2{(\ref{eq:#1}) and (\ref{eq:#2})}
+%\def\eq#1{Eq.~(\ref{eq:#1})}
+%\def\eqs#1#2{Eqs.~(\ref{eq:#1}) and (\ref{eq:#2})}
+\def\L{\left} 
+\def\R{\right}
+\def\ra{\rightarrow}
+\def\ot{\otimes}
+\def\ol{\overline}
+
+\ifdefined\LLNCS
+\newtheorem{thm}{Theorem}
+\nc{\thmautorefname}{Theorem}
+\newtheorem{rmk}[remark]{Remark}
+\newtheorem{cor}[corollary]{Corollary}
+\newtheorem{lem}[lemma]{Lemma}
+\theoremstyle{definition}
+\newtheorem{dfn}[definition]{Definition}
+\else
+\newtheorem{thm}{Theorem}
+\nc{\thmautorefname}{Theorem}
+\newtheorem{rmk}{Remark}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}
+\fi
+
+
+\ifdefined\LLNCS
+\else
+% \newtheorem{thm}{Theorem}
+% \newtheorem{rmk}{Remark}
+\newtheorem*{thm*}{Theorem}
+%\newtheorem{claim}[thm]{Claim}
+% \newtheorem{cor}[thm]{Corollary}
+% \newtheorem{lem}[thm]{Lemma}
+%\newtheorem{prop}[thm]{Proposition}
+% \newtheorem{dfn}{Definition}
+%\newtheorem{proto}{Protocol}
+%\newtheorem{con}[thm]{Conjecture}
+
+
+%\makeatletter
+%\newtheorem*{rep@theorem}{\rep@title}
+%\newcommand{\newreptheorem}[2]{%
+%\newenvironment{rep#1}[1]{%
+% \def\rep@title{#2 \ref{##1} (restatement)}%
+% \begin{rep@theorem}}%
+% {\end{rep@theorem}}}
+%\makeatother
+
+\makeatletter
+\newtheorem*{rep@theorem}{\rep@title}
+\newcommand{\newreptheorem}[2]{%
+\newenvironment{rep#1}[1]{%
+ \def\rep@title{#2 \ref{##1}}%
+ \begin{rep@theorem}}%
+ {\end{rep@theorem}}}
+\makeatother
+
+\newreptheorem{thm}{Theorem}
+\newreptheorem{lem}{Lemma}
+\fi
+
+\def\eps{\epsilon}
+\def\va{{\vec{a}}}
+\def\vb{{\vec{b}}}
+\def\vn{{\vec{n}}}
+\def\cvs{{\cdot\vec{\sigma}}}
+\def\vx{{\vec{x}}}
+\def\Usch{U_{\text{Sch}}}
+
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cC{\mathcal{C}}
+\def\cD{\mathcal{D}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cH{\mathcal{H}}
+\def\cK{\mathcal{K}}
+\def\cI{{\cal I}}
+\def\cL{{\cal L}}
+\def\cM{{\cal M}}
+\def\cN{\mathcal{N}}
+\def\cO{{\cal O}}
+\def\cP{\mathcal{P}}
+\def\cQ{\mathcal{Q}}
+\def\cR{\mathcal{R}}
+\nc\scrr{{\mathscr{r}}}
+\def\cS{{\mathcal{S}}}
+\nc\scrs{{\mathscr{s}}}
+\def\cT{{\cal T}}
+\def\cU{\mathcal{U}}
+\def\cW{{\cal W}}
+\def\cV{\mathcal{V}}
+\def\cX{{\cal X}}
+\def\cY{{\cal Y}}
+\def\Enc{\mathsf{Enc}}
+\def\Dec{\mathsf{Dec}}
+
+\def\bp{\mathbf{p}}
+\def\bq{\mathbf{q}}
+\def\bP{{\bf P}}
+\def\bQ{{\bf Q}}
+\def\gl{\mathfrak{gl}}
+
+\def\bbC{\mathbb{C}}
+% \DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\bbE}{\mathbb{E}}
+\def\bbF{\mathbb{F}}
+\def\bbM{\mathbb{M}}
+\def\bbN{\mathbb{N}}
+\def\bbR{\mathbb{R}}
+\def\bbZ{\mathbb{Z}}
+\def\bbP{\mathbb{P}}
+\def\bbV{\mathbb{V}}
+\newcommand{\Real}{\textrm{Re}}
+
+\def\real{{\mathsf{Real}}}
+\def\ideal{{\mathsf{Ideal}}}
+\def\acc{{\mathsf{Acc}}}
+\def\rej{{\mathsf{Rej}}}
+\def\SA{{\mathsf{SA}}}
+\def\route{{\mathsf{AR}}}
+\def\ART{{\mathsf{RT}}}
+
+\def\benum{\begin{enumerate}}
+\def\eenum{\end{enumerate}}
+\def\bit{\begin{itemize}}
+\def\eit{\end{itemize}}
+\def\bdesc{\begin{description}}
+\def\edesc{\end{description}}
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+\newcommand{\appref}[1]{Appendix~\ref{sec:#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{thm:#1}}
+\newcommand{\propref}[1]{Proposition~\ref{prop:#1}}
+\nc{\protoref}[1]{\hyperref[#1]{Protocol~\ref*{#1}}}
+\newcommand{\defref}[1]{Definition~\ref{def:#1}}
+\newcommand{\corref}[1]{Corollary~\ref{cor:#1}}
+\newcommand{\conref}[1]{Conjecture~\ref{con:#1}}
+
+\newcommand{\FIXME}[1]{{\color{red}FIXME: #1}}
+\nc{\todo}[1]{\textcolor{red}{todo: #1}}
+
+
+
+\newcommand{\boxdfn}[2]{
+\begin{figure}[h]
+\begin{center}
+\noindent \framebox{
+\begin{minipage}{0.8\textwidth}
+\begin{dfn}[{\bf #1}]
+\ \\ \\
+#2
+\end{dfn}
+\end{minipage}
+}
+\end{center}
+\end{figure}
+}
+
+\newcommand{\boxproto}[2]{
+\begin{figure}[h]
+\begin{center}
+\noindent \framebox{
+\begin{minipage}{0.8\textwidth}
+\begin{proto}[{\bf #1}]
+\ \\ \\
+#2
+\end{proto}
+\end{minipage}
+}
+\end{center}
+\end{figure}
+}
+
+\def\begsub#1#2\endsub{\begin{subequations}\label{eq:#1}\begin{align}#2\end{align}\end{subequations}}
+\nc\qand{\qquad\text{and}\qquad}
+\nc\mnb[1]{\medskip\noindent{\bf #1}}
+\nc\mn{\medskip\noindent}
+
+\renewcommand{\arraystretch}{1.5}
+%\nc{\problem}[1]{\item\noindent {\bf #1}}
+
+\setlength{\tabcolsep}{10pt}
+
+%%%%%% Han-Hsuan's commands %%%%%%%%
+\nc{\nl}{\nn \\ &=}  %new line
+\nc{\nnl}{\nn \\ &}  %new new line
+\nc{\fot}{\frac{1}{2}} %frac one two
+\nc{\oo}[1]{\frac{1}{#1}} % one over
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\nc{\mc}{\mathcal}
+% \nc{\beq}{\begin{equation}}
+% \nc{\eeq}{\end{equation}}
+% \nc{\norm}[1]{\L\| #1 \R\|}
+
+\nc{\onenorm}[1]{\L\| #1 \R\|_1} %one norm
+%\nc{\span}{\ensuremath{\mathrm{span}}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+%\nc{1}
+
+\newcommand{\Knote}[1]{\textcolor{red}{\small {\textbf{(KM:} #1\textbf{) }}}}
+
+\nc{\Ra}{\Rightarrow}
+\nc{\zo}{\{0,1\}}	
+
+
+% \newenvironment{protocol}[1][htb]{\floatname{algorithm}{Protocol}\begin{algorithm}[#1]}
+%  {\end{algorithm}}
+\newcounter{protocol}
+\newcommand{\linefill}{\rule{\linewidth}{0.8pt}}
+
+\newenvironment{protocol}[1]{\begingroup\setlength\parindent{0pt}\medskip\noindent\linefill\\
+\refstepcounter{protocol}\textbf{Protocol \theprotocol} #1\\\noindent\linefill}
+{\vspace{-\topsep}\noindent\linefill\endgroup}
+% \newenvironment{protocol}[1]
+%   {\par\addvspace{\topsep}
+%   \noindent
+%   \tabularx{\linewidth}{@{} X @{}}
+%     \toprule\vspace*{-\baselineskip}
+%     \refstepcounter{protocol}\textbf{Protocol \theprotocol} #1 \\
+%     \midrule\vspace*{-\baselineskip}}
+%   {\\
+%   \bottomrule
+%   \endtabularx
+%   \par\addvspace{\topsep}}
+
+\ifdefined\LLNCS
+\newaliascnt{claiml}{theorem}
+\newtheorem{claiml}[claiml]{Claim}
+\aliascntresetthe{claiml}
+
+\renewenvironment{claim}{\begin{claiml}}{\end{claiml}}
+
+\crefname{claiml}{Claim}{Claims}
+\else\fi
+
+
+%%\crefname{environment name}{singular ref}{plural ref}
+\crefname{lemma}{Lemma}{Lemmata}
+\crefname{figure}{Figure}{Figures}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{example}{Example}{Examples}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{protocol}{Protocol}{Protocols}
+%\Crefname{protocol}{Protocol}{Protocols}
+%\crefformat{algorithm}{Algorithm~\textup{#2#1#3}}
+\Crefformat{algorithm}{\textup{Algorithm~#2#1#3}}
+%\Crefformat{protocol}{\textup{Protocol~#2#1#3}}
+
+\renewcommand{\cref}{\Cref} %make all reference start with uppercase
+\newcommand{\mcitet}[1]{\citet*{#1}}
+
+% Proof of environments
+\ifdefined\LLNCS
+\newenvironment{proofof}[1]{\begin{proof}[of~#1]}{\end{proof}}
+\newenvironment{proofsketchof}[1]{\begin{proofsketch}[of~#1]}{\end{proofsketch}}
+\else
+\newenvironment{proofof}[1]{\begin{proof}[Proof of~#1]}{\end{proof}}
+\newenvironment{proofsketchof}[1]{\begin{proofsketch}[Proofsketch of~#1]}{\end{proofsketch}}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General commands.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\sgn}{\operatorname{sgn}}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\spn}{\operatorname{span}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\algorithmautorefname}{Algorithm}
+\newcommand{\SD}{\operatorname{\Delta}}
+\newcommand{\negl}{\operatorname{neg}}
+% \newcommand{\ra}{\rightarrow}
+\newcommand{\Tr}{\mathrm{Tr}}
+
+
+%Acronyms
+\newcommand{\wrt}{{with respect to \ }}
+\newcommand{\ie}{{i.e.,\ }}
+\newcommand{\eg}{{e.g.,\ }}
+\newcommand{\swia}{security-with-identifiable-abort\xspace}
+\newcommand{\wlg}{{without loss of generality\ }}
+\newcommand{\cf}{{cf.,\ }}
+\newcommand{\etal}{{et~al.\ }}
+\newcommand{\aka}{{also known as,\ }}
+\newcommand{\resp}{{resp.,\ }}
+
+%MPC related commands
+\newcommand{\parties}{\mathcal{P}}
+\newcommand{\numparties}{n}
+\newcommand{\Pc}{\operatorname{P}}
+\newcommand{\I}{{\mathcal{I}}}
+\newcommand{\adv}{{\mathcal{A}}}
+\newcommand{\Out}{\operatorname{Out}}
+\newcommand{\View}{\operatorname{View}}
+\newcommand{\REAL}{\operatorname{REAL}}
+\newcommand{\IDEAL}{\operatorname{IDEAL}}
+\newcommand{\MS}{\operatorname{MS}}
+\newcommand{\Sim}{\mathsf{S}}
+\newcommand{\MPC}{\cMPC}
+\newcommand{\cMPC}{\mathsf{cMPC}}
+\newcommand{\trustp}{\mathsf{T}}
+\newcommand{\abort}{\normalfont{\texttt{abort}}}
+\newcommand{\continue}{\normalfont{\texttt{continue}}}
+\newcommand{\success}{\normalfont{\texttt{success}}}
+\newcommand{\aux}{{\mathsf{aux}}}
+\newcommand{\func}{\mathcal{F}}
+
+%Parentheses commands
+\newcommand{\myvec}[1]{\normalfont{\textbf{#1}}}
+\newcommand{\vect}[1]{\left(#1\right)}
+\newcommand{\of}[1]{\left(#1\right)}
+\renewcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\ketbra}[1]{\dyad{#1}}
+
+%General fonts
+\newcommand{\st}{\mathsf{st}}
+\newcommand{\discard}{\mathsf{discard}}
+\newcommand{\accuse}{\mathsf{accuse}}
+\newcommand{\intext}{\operatorname{in}}
+\newcommand{\out}{\operatorname{out}}
+\newcommand{\Dom}{\mathcal{X}}
+\newcommand{\Rng}{\mathcal{Y}}
+\newcommand{\PCM}{\operatorname{PCM}}
+\newcommand{\CNOT}{\mathsf{CNOT}}
+\newcommand{\Tg}{\mathsf{T}}
+\newcommand{\Hg}{\mathsf{H}}
+\newcommand{\Xg}{\mathsf{X}}
+\newcommand{\Zg}{\mathsf{Z}}
+\newcommand{\QECC}{\mathsf{QECC}}
+% \newcommand{\Enc}{\mathsf{Enc}}
+\newcommand{\enc}{\mathsf{enc}}
+% \newcommand{\Dec}{\mathsf{Dec}}
+\newcommand{\server}{\operatorname{S}}
+\newcommand{\receiver}{\operatorname{R}}
+\newcommand{\GL}{\operatorname{GL}}
+
+% Sequential Authentication
+\newcommand{\Auth}{{\sf Auth}}
+\newcommand{\CAuth}{\mathsf{CAuth}} % Clifford auth
+\newcommand{\TAuth}{\mathsf{TAuth}} % Trap auth
+\newcommand{\KeyGen}{{\sf KeyGen}}
+% \newcommand{\Enc}{{\sf Enc}}
+% \newcommand{\Dec}{{\sf Dec}}
+\newcommand{\relay}{{\sf Q}}
+\newcommand{\flag}{{\sf F}}
+\newcommand{\SApath}{\mathsf{path}}
+\newcommand{\gray}[1]{\textcolor{gray}{#1}}
+\newcommand{\AR}{\operatorname{AR}}
+
+% Routing
+\nc{\rCont}{\mathsf{continue}}
+\nc{\rDrop}{\mathsf{drop}}
+\nc{\rAbort}{\mathsf{abort}}
+
+
+
+
+\newcommand{\ReEncCT}{\mathsf{ReEncC2T}}
+\newcommand{\ReEncTC}{\mathsf{ReEncT2C}}
+\newcommand{\circuit}{\mathsf{Qcircuit}}
+
+
+
+
+
+
+
+
