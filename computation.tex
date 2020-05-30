@@ -1,5 +1,40 @@
 \section{Computation}
 
+\nc{\vKeyGen}{\mathsf{KeyGen}}
+\nc{\vEnc}{\mathsf{Enc}}
+\nc{\vEval}{\mathsf{Eval}}
+\nc{\verdec}{\mathsf{VerDec}}
+
 \subsection{vQFHE}
 
-Here's the ideal box from \cite{magic_circuits}
+We use the vQFHE from \cite{magic_circuits}.
+
+\Ethan{This belongs in the preliminary. I'm putting it here to develop necessary notation.}
+
+\Ethan{TODO Something about $(\vKeyGen, \vEnc, \vEval, \verdec)$ goes here that's not relevant to this analysis}
+
+Real world game:
+\begin{enumerate}
+	\item The adversary chooses plaintext $\onreg{\rho}{MR_1R_2}$
+	\item The $M$ register is encrypted
+	\item The adversary acts on $MR_1$, produces ciphertext $\onreg{c}{MR}$
+	\item The challenger runs $\verdec$ on register $M$
+	\item The distinguisher gets registers $R_1R_2$ and the $\verdec$ results
+\end{enumerate}
+
+Ideal world game:
+\begin{enumerate}
+	\item The adversary chooses plaintext $\onreg{\rho}{MR_1R_2}$
+	\item The challenger applies the computation honestly to the $M$ register
+	\item The simulator receives $R_1$ and acts on it, and also produces $b\in\set{\acc, \rej}$
+	\item The distinguisher gets registers $R_1R_2$. If $b=\acc$, the distinguisher gets the real $M$ register, else it gets $\bot$ there.
+\end{enumerate}
+
+\subsection{Ideal box for computation}
+
+\subsection{Protocol for computation}
+
+\subsection{Simulator construction}
+
+\subsection{Reduction}
+
