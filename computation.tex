@@ -4,6 +4,7 @@
 \nc{\vEnc}{\mathsf{Enc}}
 \nc{\vEval}{\mathsf{Eval}}
 \nc{\verdec}{\mathsf{VerDec}}
+\nc{\comp}{{\mathsf{comp}}}
 
 \subsection{vQFHE}
 
@@ -32,9 +33,64 @@ Ideal world game:
 
 \subsection{Ideal box for computation}
 
+\begin{protocol}{Ideal functionality $\trustp_\comp$ for computation}
+
+	Public inputs:
+	\begin{itemize}
+		\item $\lambda\in\bbN$ security parameter
+		\item Circuit family $C_K$
+	\end{itemize}
+
+	Inputs:
+	\begin{itemize}
+		\item Each party has ensemble $\rho_{ij}$
+	\end{itemize}
+
+	Protocol:
+	\begin{enumerate}
+		\item Everyone gives input to $\trustp_\comp$
+		\item Server chooses $K$ for dropped qubits and sends it to $\trustp_\comp$
+		\item $\trustp_\comp$ runs circuit and Clifford encs the result
+		\item Server gets enc'd outputs
+		\item Adv chooses a set $K_2$ to keep
+		\item cMPC gets keys
+	\end{enumerate}
+
+	Outputs:
+	\begin{itemize}
+		\item Everyone gets $K_2$
+		\item Server keeps enc'd outputs in $K_2$
+		\item cMPC keeps keys in $K_2$
+	\end{itemize}
+\end{protocol}
+
 \subsection{Protocol for computation}
 
+\begin{protocol}{Protocol $\comp$ for computation}
+
+	\begin{enumerate}
+		\item AR sender to server
+		\item Re-Enc C to T
+		\item Run circuit
+		\item AR server to server
+		\item Re-Enc CT to T
+	\end{enumerate}
+
+\end{protocol}
+
 \subsection{Simulator construction}
+
+\begin{protocol}{Simulator $\cS_\comp$ for computation}
+
+	\begin{enumerate}
+		\item Sample a bunch of fake stuff
+		\item Grabs everything in first AR. Feed in fake stuff.
+		\item Feeds in ideal box
+		\item Take fake stuff back in second AR, try decrypting it.
+		\item If decrypt success, feed right stuff in. Otherwise feed stuff in that will get rejected.
+	\end{enumerate}
+
+\end{protocol}
 
 \subsection{Reduction}
 
