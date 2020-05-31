@@ -7,22 +7,21 @@
 \nc{\comp}{{\mathsf{comp}}}
 \nc{\EvQFHE}{{\mathsf{EvQFHE}}}
 
-For the sake of reduction, we'll first define an ideal functionality $\EvQFHE$ for \emph{extended} vQFHE which captures the core idea of the computation phase.
-We'll prove its security. Then we'll define our protocol $\comp$ for computation, and prove its security by reduction.
+For the sake of reduction, we'll first define an ideal functionality $\EvQFHE$ for \emph{extended} vQFHE which captures the core idea of our computation phase.
+We'll prove its security. We then define our protocol $\comp$ for computation, and prove its security based on the security of $\EvQFHE$.
 
 \subsection{Extended vQFHE}
 
 \cite{magic_circuits} proposes the tuple $(\vKeyGen, \vEnc, \vEval, \verdec)$,
-which implicitly defines a corresponding protocol between two parties: an always honest client and a potentially dishonest server.
-We extend it by allowing interactions during computation, and changing the decoding process.
+which implicitly defines a protocol between an always honest client and a potentially dishonest server.
+We extend it by allowing interactions during computation and modifying the decoding process.
 
 \begin{protocol}{The protocol $\EvQFHE$ for \emph{extended} verifiable QFHE}
 
 	Public input:
 	\begin{itemize}
 		\item Sec. param $\lambda\in\bbN$
-		\item Size of input $n\in\bbN$
-		\item Quantum circuit $C$ with $n$ input qubits
+		\item Quantum circuit $C$ with input in $\cB^{\otimes n}$
 	\end{itemize}
 
 	Client's input:
@@ -35,7 +34,7 @@ We extend it by allowing interactions during computation, and changing the decod
 		\item The client generates $(sk, evk)\leftarrow\vKeyGen$ and $\sigma=\vEnc(sk, \rho)$. It sends $\sigma$ and $evk$ to the server.
 		\item The server and client applies homomorphic computation. \Ethan{we'll make this precise later}
 		\item The server sends the output ciphertext $\sigma'$ to the client.
-		\item The client extracts from $\sigma$ the traps and corrects the $\ket{+}$ to $\ket{0}$ to obtain $\tau\in\cB^{\otimes 2\lambda}$. That is, on honest behavior, $\tau=0^{2\lambda}$.
+		\item The client extracts the traps from $\sigma'$ and corrects the $\ket{+}$ to $\ket{0}$, obtaining $\tau\in\cB^{\otimes 2\lambda}$. (That is, on honest behavior, $\tau=\ket{0^{2\lambda}}$.)
 			It samples $r, s\xleftarrow{\$}\zo^{2\lambda}$, then produces and sends $\tau'\leftarrow X^rZ^s\tau Z^sX^r$ to the server.
 		\item The server measures $\tau'$ and sends the measurement results $r'$ back to the client.
 		\item If $r=r'$, the client generates and outputs $\rho'$ by decoding the message portion of $\sigma'$. Otherwise the client outputs $\rho'\leftarrow\bot$.
@@ -114,8 +113,7 @@ More precisely, the interface and the ideal functionality is as below:
 		\item Server chooses $K$ for dropped inputs and sends it to $\trustp_\comp$
 		\item $\trustp_\comp$ runs circuit on remaining inputs and Clifford encs the result
 		\item Server gets enc'd outputs
-		\item Adv chooses a set $K_2$ to keep.
-		\item If the server is malicious, adversary can send $\bot$ to kill it.
+		\item Adv chooses a set $K_2$ to keep. If the server is malicious, adversary can send $\bot$ to kill it instead.
 		\item If server isn't killed, cMPC gets keys in $K_2$
 	\end{enumerate}
 
@@ -133,4 +131,4 @@ I'm still thinking how to go about this.
 
 Originally I thought to assume for the sake of contradiction that there exists an attack against $\comp$,
 and try to come up with an attack against $\EvQFHE$.
-But maybe I can just directly build the simulator $\cS_\comp$ by taking parts of $\cS_\EvQFHE$?
+But maybe I can just directly build the simulator $\cS_\comp$ using $\cS_\EvQFHE$?
