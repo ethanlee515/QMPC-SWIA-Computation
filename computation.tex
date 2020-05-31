@@ -5,55 +5,118 @@
 \nc{\vEval}{\mathsf{Eval}}
 \nc{\verdec}{\mathsf{VerDec}}
 \nc{\comp}{{\mathsf{comp}}}
+\nc{\EvQFHE}{{\mathsf{EvQFHE}}}
 
-\subsection{vQFHE}
+For the sake of reduction, we'll first define an ideal functionality $\EvQFHE$ for \emph{extended} vQFHE which captures the core idea of the computation phase.
+We'll prove its security. Then we'll define our protocol $\comp$ for computation, and prove its security by reduction.
 
-We use the vQFHE from \cite{magic_circuits}.
+\subsection{Extended vQFHE}
 
-\Ethan{This belongs in the preliminary. I'm putting it here to develop necessary notation.}
+\cite{magic_circuits} proposes the tuple $(\vKeyGen, \vEnc, \vEval, \verdec)$,
+which implicitly defines a corresponding protocol between two parties: an always honest client and a potentially dishonest server.
+We extend it by allowing interactions during computation, and changing the decoding process.
 
-\Ethan{TODO Something about $(\vKeyGen, \vEnc, \vEval, \verdec)$ goes here that's not relevant to this analysis}
+\begin{protocol}{The protocol $\EvQFHE$ for \emph{extended} verifiable QFHE}
 
-Real world game:
-\begin{enumerate}
-	\item The adversary chooses plaintext $\onreg{\rho}{MR_1R_2}$
-	\item The $M$ register is encrypted
-	\item The adversary acts on $MR_1$, produces ciphertext $\onreg{c}{MR}$
-	\item The challenger runs $\verdec$ on register $M$
-	\item The distinguisher gets registers $R_1R_2$ and the $\verdec$ results
-\end{enumerate}
+	Public input:
+	\begin{itemize}
+		\item Sec. param $\lambda\in\bbN$
+		\item Size of input $n\in\bbN$
+		\item Quantum circuit $C$ with $n$ input qubits
+	\end{itemize}
 
-Ideal world game:
-\begin{enumerate}
-	\item The adversary chooses plaintext $\onreg{\rho}{MR_1R_2}$
-	\item The challenger applies the computation honestly to the $M$ register
-	\item The simulator receives $R_1$ and acts on it, and also produces $b\in\set{\acc, \rej}$
-	\item The distinguisher gets registers $R_1R_2$. If $b=\acc$, the distinguisher gets the real $M$ register, else it gets $\bot$ there.
-\end{enumerate}
+	Client's input:
+	\begin{itemize}
+		\item Some quantum state $\rho\in\cB^{\otimes n}$
+	\end{itemize}
 
-\subsection{Ideal box for computation}
+	Protocol:
+	\begin{enumerate}
+		\item The client generates $(sk, evk)\leftarrow\vKeyGen$ and $\sigma=\vEnc(sk, \rho)$. It sends $\sigma$ and $evk$ to the server.
+		\item The server and client applies homomorphic computation. \Ethan{we'll make this precise later}
+		\item The server sends the output ciphertext $\sigma'$ to the client.
+		\item The client extracts from $\sigma$ the traps and corrects the $\ket{+}$ to $\ket{0}$ to obtain $\tau\in\cB^{\otimes 2\lambda}$. That is, on honest behavior, $\tau=0^{2\lambda}$.
+			It samples $r, s\xleftarrow{\$}\zo^{2\lambda}$, then produces and sends $\tau'\leftarrow X^rZ^s\tau Z^sX^r$ to the server.
+		\item The server measures $\tau'$ and sends the measurement results $r'$ back to the client.
+		\item If $r=r'$, the client generates and outputs $\rho'$ by decoding the message portion of $\sigma'$. Otherwise the client outputs $\rho'\leftarrow\bot$.
+	\end{enumerate}
+
+\end{protocol}
+
+In the simulator-based security of \cite{magic_circuits} there is no ``client";
+instead, some implicit ``challenger" takes and decrypts the adversary's outputs, then sends only the results to the distinguisher.
+Here we explicitly add the honest client to use the standard simulator-based security.
+
+\begin{protocol}{The ideal box for $\EvQFHE$, $\trustp_\EvQFHE$}
+
+	\begin{enumerate}
+		\item The client sends $\rho$ to $\trustp_\EvQFHE$.
+		\item The server sends $b\in\set{\acc, \rej}$ to $\trustp_\EvQFHE$.
+		\item If $b=\acc$ then $\trustp_\EvQFHE$ sends $\rho'\leftarrow C(\rho)$ to the client, else it sends $\rho'\leftarrow\bot$ to the client.
+	\end{enumerate}
+
+\end{protocol}
+
+I think a simulator $\cS_\EvQFHE$ is buildable.
+
+\subsection{Computation}
+
+Recall our candidate protocol is as below:
+
+\begin{protocol}{Candidate protocol for input encoding}
+	\begin{enumerate}
+		\item QECC encoding
+		\item AR everyone-to-server
+		\item Re-Enc C-to-T
+		\item QECC decoding
+		\item Computation
+		\item QECC encoding
+		\item AR server-to-server
+		\item Re-enc CT-to-C with traps-checking
+		\item Re-enc C-to-T
+		\item QECC decoding
+	\end{enumerate}
+\end{protocol}
+
+Here I'll only capture steps $3$ to $8$ as below:
+
+\begin{protocol}{Protocol $\comp$ for computation}
+
+	\begin{enumerate}
+		\item AR sender to server
+		\item Re-Enc C to T
+		\item Run some circuit
+		\item AR server to server
+		\item Re-Enc CT to T with checks
+	\end{enumerate}
+
+\end{protocol}
+
+More precisely, the interface and the ideal functionality is as below:
 
 \begin{protocol}{Ideal functionality $\trustp_\comp$ for computation}
 
 	Public inputs:
 	\begin{itemize}
 		\item $\lambda\in\bbN$ security parameter
-		\item Circuit family $C_K$
+		\item $\vect{s_i}$, the size of $\Pc_i$'s inputs.
+		\item Circuit family $C_K$ indexed by sets of dropped inputs.
 	\end{itemize}
 
 	Inputs:
 	\begin{itemize}
-		\item Each party has ensemble $\rho_{ij}$
+		\item $\Pc_i$ has ensemble $\vect{\rho_{ij}}_{j=1}^{s_j}$
 	\end{itemize}
 
 	Protocol:
 	\begin{enumerate}
 		\item Everyone gives input to $\trustp_\comp$
-		\item Server chooses $K$ for dropped qubits and sends it to $\trustp_\comp$
-		\item $\trustp_\comp$ runs circuit and Clifford encs the result
+		\item Server chooses $K$ for dropped inputs and sends it to $\trustp_\comp$
+		\item $\trustp_\comp$ runs circuit on remaining inputs and Clifford encs the result
 		\item Server gets enc'd outputs
-		\item Adv chooses a set $K_2$ to keep
-		\item cMPC gets keys
+		\item Adv chooses a set $K_2$ to keep.
+		\item If the server is malicious, adversary can send $\bot$ to kill it.
+		\item If server isn't killed, cMPC gets keys in $K_2$
 	\end{enumerate}
 
 	Outputs:
@@ -64,33 +127,10 @@ Ideal world game:
 	\end{itemize}
 \end{protocol}
 
-\subsection{Protocol for computation}
-
-\begin{protocol}{Protocol $\comp$ for computation}
-
-	\begin{enumerate}
-		\item AR sender to server
-		\item Re-Enc C to T
-		\item Run circuit
-		\item AR server to server
-		\item Re-Enc CT to T
-	\end{enumerate}
-
-\end{protocol}
-
-\subsection{Simulator construction}
-
-\begin{protocol}{Simulator $\cS_\comp$ for computation}
-
-	\begin{enumerate}
-		\item Sample a bunch of fake stuff
-		\item Grabs everything in first AR. Feed in fake stuff.
-		\item Feeds in ideal box
-		\item Take fake stuff back in second AR, try decrypting it.
-		\item If decrypt success, feed right stuff in. Otherwise feed stuff in that will get rejected.
-	\end{enumerate}
-
-\end{protocol}
-
 \subsection{Reduction}
 
+I'm still thinking how to go about this.
+
+Originally I thought to assume for the sake of contradiction that there exists an attack against $\comp$,
+and try to come up with an attack against $\EvQFHE$.
+But maybe I can just directly build the simulator $\cS_\comp$ by taking parts of $\cS_\EvQFHE$?
